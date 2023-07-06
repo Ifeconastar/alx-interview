@@ -2,6 +2,12 @@
 """ Pascal Triangle """
 
 def pascal_triangle(n):
+     """ Algorithm that returns a list
+    containing pascal triangle
+    Args:
+        n specifies the number of rows
+    Return: List
+    """
     if n <= 0:
         return []
 
