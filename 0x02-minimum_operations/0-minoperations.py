@@ -47,8 +47,3 @@ def minOperations(n):
         min_ops = min(min_ops, temp_ops)
 
     return min_ops
-
-
-# Example usage
-n = 9
-print(minOperations(n))  # Output: 6
