@@ -7,18 +7,16 @@ a prime number game played for multiple rounds.
 
 
 def isWinner(x, nums):
+
     """
     Determines the winner of each round of the prime number game.
-
     Args:
         x (int): The number of rounds.
         nums (list of int): An array of n for each round.
-
     Returns:
         str or None: The name of the player that won the most rounds.
         Returns None if the winner cannot be determined.
     """
-
     def is_prime(num):
         """
         Checks if a given number is prime.
@@ -54,7 +52,7 @@ def isWinner(x, nums):
         """
         if n == 1:
             return False
-        if n % 2 == 0:
+        if is_prime(n):
             return True
         return False
 
