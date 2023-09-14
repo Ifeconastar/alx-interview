@@ -1,90 +1,67 @@
 #!/usr/bin/python3
+""" Prime Game """
 
-"""
-This script defines a function to determine the winner of
-a prime number game played for multiple rounds.
-"""
+
+def findMultiples(x, lists):
+    """ Find multiples
+    """
+    for i in lists:
+        if i % x == 0:
+            lists.remove(i)
+    return lists
+
+
+def isPrime(i):
+    """ check for
+    primes
+    """
+    if i == 1:
+        return False
+    for j in range(2, i):
+        if i % j == 0:
+            return False
+    return True
+
+
+def picks(lists):
+    """ takes a list and
+    returns their picks
+    """
+    counter = 0
+    for i in range(1, len(lists) + 1):
+        if isPrime(i):
+            counter += 1
+            lists.remove(i)
+            lists = findMultiples(i, lists)
+        else:
+            pass
+    return counter
 
 
 def isWinner(x, nums):
-
     """
-    Determines the winner of each round of the prime number game.
-    Args:
-        x (int): The number of rounds.
-        nums (list of int): An array of n for each round.
-    Returns:
-        str or None: The name of the player that won the most rounds.
-        Returns None if the winner cannot be determined.
+    Prime game played by Maria and Ben.
+    Given a set of consecutive integers
+    starting from 1 up to and including n,
+    they take turns choosing a prime number
+    from the set and removing that number and
+    its multiples from the set. The player that
+    cannot make a move loses the game.
     """
-    def is_prime(num):
-        """
-        Checks if a given number is prime.
+    players = {'Maria': 0, 'Ben': 0}
+    val = []
+    for i in range(x):
+        val = [j for j in range(1, nums[i] + 1)]
+        pick = picks(val)
 
-        Args:
-            num (int): The number to check.
+        if pick % 2 == 0:
+            players['Ben'] += 1
+        elif pick % 2 != 0:
+            players['Maria'] += 1
 
-        Returns:
-            bool: True if the number is prime, False otherwise.
-        """
-        if num <= 1:
-            return False
-        if num <= 3:
-            return True
-        if num % 2 == 0 or num % 3 == 0:
-            return False
-        i = 5
-        while i * i <= num:
-            if num % i == 0 or num % (i + 2) == 0:
-                return False
-            i += 6
-        return True
-
-    def can_win(n):
-        """
-        Determines if a player can win with a given n.
-
-        Args:
-            n (int): The value of n for a round.
-
-        Returns:
-            bool: True if the player can win, False otherwise.
-        """
-        if n == 1:
-            return False
-        if is_prime(n):
-            return True
-        return False
-
-    def get_winner(n):
-        """
-        Gets the winner's name based on n.
-
-        Args:
-            n (int): The value of n for a round.
-
-        Returns:
-            str: The name of the winner ("Maria" or "Ben").
-        """
-        if n % 2 == 0:
-            return "Maria"
-        else:
-            return "Ben"
-
-    maria_wins = 0
-    ben_wins = 0
-
-    for n in nums:
-        if can_win(n):
-            winner = get_winner(n)
-            if winner == "Maria":
-                maria_wins += 1
-            else:
-                ben_wins += 1
-
-    if maria_wins > ben_wins:
-        return "Maria"
-    elif ben_wins > maria_wins:
-        return "Ben"
+    if players['Maria'] > players['Ben']:
+        return 'Maria'
+    elif players['Maria'] < players['Ben']:
+        return 'Ben'
     else:
         return None
