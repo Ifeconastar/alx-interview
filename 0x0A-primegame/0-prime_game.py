@@ -1,67 +1,57 @@
 #!/usr/bin/python3
-""" Prime Game """
+"""Module defining isWinner function."""
 
 
-def findMultiples(x, lists):
-    """ Find multiples
-    """
-    for i in lists:
-        if i % x == 0:
-            lists.remove(i)
-    return lists
+def isWinner(x, nums):
+    """Function to get who has won in prime game"""
+    mariaWinsCount = 0
+    benWinsCount = 0
+
+    for num in nums:
+        roundsSet = list(range(1, num + 1))
+        primesSet = primes_in_range(1, num)
+
+        if not primesSet:
+            benWinsCount += 1
+            continue
+
+        isMariaTurns = True
+
+        while(True):
+            if not primesSet:
+                if isMariaTurns:
+                    benWinsCount += 1
+                else:
+                    mariaWinsCount += 1
+                break
+
+            smallestPrime = primesSet.pop(0)
+            roundsSet.remove(smallestPrime)
+
+            roundsSet = [x for x in roundsSet if x % smallestPrime != 0]
+
+            isMariaTurns = not isMariaTurns
+
+    if mariaWinsCount > benWinsCount:
+        return "Winner: Maria"
+
+    if mariaWinsCount < benWinsCount:
+        return "Winner: Ben"
+
+    return None
 
 
-def isPrime(i):
-    """ check for
-    primes
-    """
-    if i == 1:
+def is_prime(n):
+    """Returns True if n is prime, else False."""
+    if n < 2:
         return False
-    for j in range(2, i):
-        if i % j == 0:
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
             return False
     return True
 
 
-def picks(lists):
-    """ takes a list and
-    returns their picks
-    """
-    counter = 0
-    for i in range(1, len(lists) + 1):
-        if isPrime(i):
-            counter += 1
-            lists.remove(i)
-            lists = findMultiples(i, lists)
-        else:
-            pass
-    return counter
-
-
-def isWinner(x, nums):
-    """
-    Prime game played by Maria and Ben.
-    Given a set of consecutive integers
-    starting from 1 up to and including n,
-    they take turns choosing a prime number
-    from the set and removing that number and
-    its multiples from the set. The player that
-    cannot make a move loses the game.
-    """
-    players = {'Maria': 0, 'Ben': 0}
-    val = []
-    for i in range(x):
-        val = [j for j in range(1, nums[i] + 1)]
-        pick = picks(val)
-
-        if pick % 2 == 0:
-            players['Ben'] += 1
-        elif pick % 2 != 0:
-            players['Maria'] += 1
-
-    if players['Maria'] > players['Ben']:
-        return 'Maria'
-    elif players['Maria'] < players['Ben']:
-        return 'Ben'
-    else:
-        return None
+def primes_in_range(start, end):
+    """Returns a list of prime numbers between start and end (inclusive)."""
+    primes = [n for n in range(start, end+1) if is_prime(n)]
+    return primes
